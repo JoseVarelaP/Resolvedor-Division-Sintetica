@@ -22,42 +22,55 @@ local MostrarEnTabla = true
 ]]
 
 TablasParaTomar = {-9,0,216,-1053,3645,-8748,8748};
-ValorPorMultiplicar = 6
-ResultadoTabla = {};
+--ValorPorMultiplicar = 6
+function Inicio()
+    local ValorPorMultiplicar
+    repeat
+        io.write("Por favor, ingrese un valor para Multiplar la tabla: ")
+        io.flush()
+        ValorPorMultiplicar=io.read()
+    until ValorPorMultiplicar=="6"
 
-local ValorParaComenzar = 1
-for i=1,#TablasParaTomar do
-    ValorParaComenzar = ValorParaComenzar * (ValorPorMultiplicar) + TablasParaTomar[i]
-    if MostrarEnTabla then
-        ResultadoTabla[i] = "   "..ValorParaComenzar.."  ";
-    end
-    print("Valor "..i..": "..ValorParaComenzar)
-end
+    ResultadoTabla = {};
 
--- Termina con el resultado final, que será en dos tablas.
-print("Valor final:"..ValorParaComenzar)
-if MostrarEnTabla then
-    ResultadoFinal = ''
-    ValoresTomados = ''
+    local ValorParaComenzar = 1
     for i=1,#TablasParaTomar do
-        ValoresTomados = ValoresTomados .. "   "..TablasParaTomar[i].."  "
+        ValorParaComenzar = ValorParaComenzar * (ValorPorMultiplicar) + TablasParaTomar[i]
+        if MostrarEnTabla then
+            ResultadoTabla[i] = "   "..ValorParaComenzar.."  ";
+        end
+        print("Valor "..i..": "..ValorParaComenzar)
     end
-    for i=1,#ResultadoTabla do
-        ResultadoFinal = ResultadoFinal .. ResultadoTabla[i]
+
+    -- Termina con el resultado final, que será en dos tablas.
+    print("Valor final:"..ValorParaComenzar)
+    if MostrarEnTabla then
+        ResultadoFinal = ''
+        ValoresTomados = ''
+        for i=1,#TablasParaTomar do
+            ValoresTomados = ValoresTomados .. "   "..TablasParaTomar[i].."  "
+        end
+        for i=1,#ResultadoTabla do
+            ResultadoFinal = ResultadoFinal .. ResultadoTabla[i]
+        end
+        print(" ---------------- Tabla de Resultado ----------------" )
+        print("Valor Utilizado: ".. ValorPorMultiplicar )
+        print(" 1   ".. ValoresTomados )
+        print(" 1   ".. ResultadoFinal )
+        print(" ---------------- Fin de Tabla ----------------" )
     end
-    print(" ---------------- Tabla de Resultado ----------------" )
-    print("Valor Utilizado: ".. ValorPorMultiplicar )
-    print(" 1   ".. ValoresTomados )
-    print(" 1   ".. ResultadoFinal )
-    print(" ---------------- Fin de Tabla ----------------" )
+
+    if ValorParaComenzar == 0 then
+        print("Este valor (w="..ValorPorMultiplicar..") es raiz!\nComenzando la siguente...\n\n\n")
+        table.remove(TablasParaTomar, #TablasParaTomar)
+        Inicio()
+    else
+        print("No termina siendo raíz, intenta con otro valor.")
+        Inicio()
+    end
 end
 
-if ValorParaComenzar == 0 then
-    print("Este valor (w="..ValorPorMultiplicar..") es raiz!")
-else
-    print("No termina siendo raíz, intenta con otro valor.")
-end
-
+Inicio()
 --[[
 Copyright (c) 2018 Jose_Varela
 
