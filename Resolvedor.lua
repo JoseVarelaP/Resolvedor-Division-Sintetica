@@ -4,8 +4,6 @@
 -- Inicializa todo lo que utilizaremos para
 -- el proceso.
 local TablasParaTomar, ValorPorMultiplicar, Resultado
-
-local MostrarEnTabla = true
 --[[
     Esto ya tomará en cuenta que ya resolviste la parte de conseguir el valor
     a descomponer.
@@ -20,11 +18,33 @@ local MostrarEnTabla = true
 
     Tomaremos lo que tenemos de datos, y lo llevaros al convertidor.
 ]]
-
 local Textos = {
+    Bienvenida = "Bienvenido al resolvedor de Divisiones Sintéticas.\nPor Jose_Varela, 2018.",
+    PreguntaInicial = "¿Desea que los resultados se muestren en una tabla? (y/n)",
     IngresarValor = "Por favor, ingrese un valor para Multiplar la tabla: ",
     Cancelado = "No valor fue agregado, cancelando..."
 };
+
+local PermitirTablas
+os.execute("clear")
+repeat
+    io.write(
+    "----------------\n"..
+    Textos["Bienvenida"]
+    .."\n----------------\n"..
+    Textos["PreguntaInicial"]
+    )
+    io.flush()
+    PermitirTablas=io.read()
+until PermitirTablas=="y" or PermitirTablas=="n" or PermitirTablas==""
+
+if PermitirTablas == "y" then
+    print("Habilitando soporte de tablas.\n\n")
+    PermitirTablas = true
+else
+    print("Tablas se mantendrán apagadas.\n\n")
+    PermitirTablas = false
+end
 
 TablasParaTomar = {-9,0,216,-1053,3645,-8748,8748};
 --ValorPorMultiplicar = 6
@@ -40,13 +60,14 @@ function Inicio()
     end
 
     if string.len(tonumber(ValorPorMultiplicar)) > 0 then
+        print("\n\n")
 
         ResultadoTabla = {};
 
         local ValorParaComenzar = 1
         for i=1,#TablasParaTomar do
             ValorParaComenzar = ValorParaComenzar * (ValorPorMultiplicar) + TablasParaTomar[i]
-            if MostrarEnTabla then
+            if PermitirTablas then
                 ResultadoTabla[i] = "   "..ValorParaComenzar.."  ";
             end
             print("Valor "..i..": "..ValorParaComenzar)
@@ -54,7 +75,7 @@ function Inicio()
 
         -- Termina con el resultado final, que será en dos tablas.
         print("Valor final:"..ValorParaComenzar)
-        if MostrarEnTabla then
+        if PermitirTablas then
             ResultadoFinal = ''
             ValoresTomados = ''
             for i=1,#TablasParaTomar do
