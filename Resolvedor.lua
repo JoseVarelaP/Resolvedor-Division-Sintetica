@@ -36,8 +36,11 @@ local MostrarEnTabla = true
     Tomaremos lo que tenemos de datos, y lo llevaros al convertidor.
 ]]
 
+-- Cambia estos dos valores para comenzar la operación.
+-------------------------
 TablasParaTomar = {-9,0,216,-1053,3645,-8748,8748};
 ValorPorMultiplicar = 6
+-------------------------
 ResultadoTabla = {};
 
 local ValorParaComenzar = 1
@@ -75,8 +78,7 @@ end
 
 return t;
 
-MIT License
-
+--[[
 Copyright (c) 2018 Jose_Varela
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -96,3 +98,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+]]
