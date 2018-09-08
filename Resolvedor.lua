@@ -1,20 +1,5 @@
 -- Resolvedor de Division Sintetica
--- Un proceso corriendo en StepMania 5.
 -- Por Jose_Varela
--- Esta parte no importa, es solamente como fondo.
--------------------------------------------------------
-local t = Def.ActorFrame{};
-
-t[#t+1] = Def.Quad{
-    OnCommand=function(self)
-        self:FullScreen():diffuse(Color.Black);
-    end;
-};
-t[#t+1] = LoadFont("Common Normal")..{
-    Text="Checa la terminal!";
-    OnCommand=cmd(Center);
-};
--------------------------------------------------------
 
 -- Inicializa todo lo que utilizaremos para
 -- el proceso.
@@ -36,11 +21,8 @@ local MostrarEnTabla = true
     Tomaremos lo que tenemos de datos, y lo llevaros al convertidor.
 ]]
 
--- Cambia estos dos valores para comenzar la operación.
--------------------------
 TablasParaTomar = {-9,0,216,-1053,3645,-8748,8748};
 ValorPorMultiplicar = 6
--------------------------
 ResultadoTabla = {};
 
 local ValorParaComenzar = 1
@@ -75,8 +57,6 @@ if ValorParaComenzar == 0 then
 else
     print("No termina siendo raíz, intenta con otro valor.")
 end
-
-return t;
 
 --[[
 Copyright (c) 2018 Jose_Varela
