@@ -3,7 +3,10 @@
 
 -- Inicializa todo lo que utilizaremos para
 -- el proceso.
-local TablasParaTomar, ValorPorMultiplicar, Resultado
+local TablasParaTomar, ValorPorMultiplicar, Resultado, FuturosValores
+local NumeroSerie = 1
+local SeriesCompletadas = {};
+local TablaOriginal = ""
 --[[
     Esto ya tomará en cuenta que ya resolviste la parte de conseguir el valor
     a descomponer.
@@ -19,7 +22,7 @@ local TablasParaTomar, ValorPorMultiplicar, Resultado
     Tomaremos lo que tenemos de datos, y lo llevaros al convertidor.
 ]]
 local Textos = {
-    Bienvenida = "Bienvenido al resolvedor de Divisiones Sintéticas.\nPor Jose_Varela, 2018.",
+    Bienvenida = "Bienvenido al resolvedor de Divisiones Sintéticas.\nPor Jose_Varela, 2018.\nEl programa cae en la licencia MIT.\nPara más información, veá el archivo LICENSE includo con el programa.",
     PreguntaInicial = "¿Desea que los resultados se muestren en una tabla? (y/n)",
     IngresarValor = "Por favor, ingrese un valor para Multiplar la tabla: ",
     Cancelado = "No valor fue agregado, cancelando..."
@@ -47,22 +50,56 @@ else
 end
 
 TablasParaTomar = {-9,0,216,-1053,3645,-8748,8748};
+
+if not TablaOriginal then
+    for i=1,#TablasParaTomar do
+        TablaOriginal = TablaOriginal .. "    "..TablasParaTomar[i].."   "
+    end
+end
 --ValorPorMultiplicar = 6
+function RemoverInnecesario()
+    if #SeriesCompletadas ~= NumeroSerie then
+        table.remove(SeriesCompletadas, #SeriesCompletadas)
+        RemoverInnecesario()
+    else
+        Dar_Resultado()
+    end
+end
+
+function Dar_Resultado()
+    if #SeriesCompletadas ~= NumeroSerie then
+        RemoverInnecesario()
+    end
+    os.execute("clear")
+    print(Textos["Cancelado"])
+    if NumeroSerie > 1 then
+        print("\n ---------------- Series Completadas ----------------" )
+        print("Valor Original: "..TablaOriginal)
+        for i=1,#SeriesCompletadas do
+            print( "Serie "..i..": ".. SeriesCompletadas[i] )
+        end
+        print(" --------------------------------" )
+    end
+    return
+end
+
 function Inicio()
     local ValorPorMultiplicar
-        io.write(Textos["IngresarValor"])
+        io.write("Serie "..NumeroSerie.."\n"..Textos["IngresarValor"])
         io.flush()
         ValorPorMultiplicar=io.read()
 
     if tonumber(ValorPorMultiplicar) == nil then
-        print(Textos["Cancelado"])
+        NumeroSerie = NumeroSerie-1
+        Dar_Resultado()
         return
     end
 
-    if string.len(tonumber(ValorPorMultiplicar)) > 0 then
+    if ValorPorMultiplicar and string.len(tonumber(ValorPorMultiplicar)) > 0 then
         print("\n\n")
 
         ResultadoTabla = {};
+        FuturosValores = {};
 
         local ValorParaComenzar = 1
         for i=1,#TablasParaTomar do
@@ -70,6 +107,7 @@ function Inicio()
             if PermitirTablas then
                 ResultadoTabla[i] = "   "..ValorParaComenzar.."  ";
             end
+            FuturosValores[i] = ValorParaComenzar
             print("Valor "..i..": "..ValorParaComenzar)
         end
 
@@ -84,16 +122,19 @@ function Inicio()
             for i=1,#ResultadoTabla do
                 ResultadoFinal = ResultadoFinal .. ResultadoTabla[i]
             end
+            SeriesCompletadas[#SeriesCompletadas+1] = ResultadoFinal
+            os.execute("clear")
             print(" ---------------- Tabla de Resultado ----------------" )
-            print("Valor Utilizado: ".. ValorPorMultiplicar )
             print(" 1   ".. ValoresTomados )
             print(" 1   ".. ResultadoFinal )
-            print(" ---------------- Fin de Tabla ----------------" )
+            print(" ---------------- Fin de Tabla ----------------")
         end
 
         if ValorParaComenzar == 0 then
             print("Este valor (w="..ValorPorMultiplicar..") es raiz!\nComenzando la siguente...\n\n\n")
-            table.remove(TablasParaTomar, #TablasParaTomar)
+            table.remove(FuturosValores, #FuturosValores)
+            TablasParaTomar = FuturosValores
+            NumeroSerie = NumeroSerie + 1
             Inicio()
         else
             print("No termina siendo raíz, intenta con otro valor.")
@@ -107,6 +148,7 @@ function Inicio()
 end
 
 Inicio()
+
 --[[
 Copyright (c) 2018 Jose_Varela
 
